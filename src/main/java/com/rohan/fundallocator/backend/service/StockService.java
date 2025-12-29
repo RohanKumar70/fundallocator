@@ -1,12 +1,12 @@
 package com.rohan.fundallocator.backend.service;
-
 import com.rohan.fundallocator.backend.client.StockApiClient;
 import com.rohan.fundallocator.backend.model.Stock;
 import com.rohan.fundallocator.backend.util.RiskCategorizer;
+import com.rohan.fundallocator.backend.model.RiskLevel;
 import com.rohan.fundallocator.backend.util.VolatilityCalculator;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StockService {
@@ -17,18 +17,33 @@ public class StockService {
         this.stockApiClient = stockApiClient;
     }
 
-    public List<Stock> getStocksWithRisk() {
+    public Stock analyzeStock(String symbol) {
 
-        List<Stock> stocks = stockApiClient.getSp500Stocks();
+        List<Map<String, String>> timeSeries =
+                stockApiClient.fetchTimeSeries(symbol);
 
-        for (Stock stock : stocks) {
-            var prices = stockApiClient.getHistoricalPrices(stock.getSymbol());
-
-            double volatility = VolatilityCalculator.calculateVolatility(prices);
-            stock.setVolatility(volatility);
-            stock.setRiskLevel(RiskCategorizer.determineRisk(volatility));
+        if (timeSeries.isEmpty()) {
+            return new Stock(symbol, 0.0, 0.0, RiskLevel.LOW);
         }
 
-        return stocks;
+        // Extract close prices safely
+        List<Double> closePrices = timeSeries.stream()
+                .map(entry -> entry.get("close"))
+                .filter(c -> c != null && !c.isBlank())
+                .map(Double::parseDouble)
+                .toList();
+
+        if (closePrices.size() < 2) {
+            double price = closePrices.isEmpty() ? 0.0 : closePrices.get(0);
+            return new Stock(symbol, price, 0.0, RiskLevel.LOW);
+        }
+
+        // Latest close = current price
+        double currentPrice = closePrices.get(0);
+
+        double volatility = VolatilityCalculator.calculateVolatility(closePrices);
+        RiskLevel riskLevel = RiskCategorizer.categorize(volatility);
+
+        return new Stock(symbol, currentPrice, volatility, riskLevel);
     }
 }
