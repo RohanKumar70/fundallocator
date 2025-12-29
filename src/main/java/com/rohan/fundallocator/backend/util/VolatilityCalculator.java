@@ -24,6 +24,9 @@ public class VolatilityCalculator {
         double stdDev = Math.sqrt(sumSq / (returns.length - 1));
 
         // 4️⃣ Annualize (approx. 252 trading days)
+        System.out.println(stdDev);
+        System.out.println(stdDev * Math.sqrt(252));
         return stdDev * Math.sqrt(252);
+
     }
 }

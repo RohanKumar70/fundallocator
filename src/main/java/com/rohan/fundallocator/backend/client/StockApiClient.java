@@ -1,5 +1,4 @@
 package com.rohan.fundallocator.backend.client;
-import com.rohan.fundallocator.backend.model.Stock;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.Map;
 @Component
 public class StockApiClient {
 
-    private static final String API_KEY = "YOUR_TWELVE_DATA_API_KEY";
+    private static final String API_KEY = "a6cf0888eeff46d2a583ad6c70814d10";
     private static final String BASE_URL = "https://api.twelvedata.com";
 
     private final RestTemplate restTemplate = new RestTemplate();
