@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset = "UTF-8">
+    <title>Fund Allocator</title>
+    <link rel = "stylesheet" href = "style.css">
+</head>
+<body>
+<div class = "container">
+    <h1> Fund Allocator</h1>
+    <form id = "allocationForm">
+        <label> Stock Symbols (separate by commas) </label>
+        <input id = "symbols" placeholder = "AAPL, MSFT, GOOGL" value = "AAPL">
+
+        <label> Total Investment (In USD) </label>
+        <input id = "amount" type ="number" placeholder="1000" value = "1000">
+
+        <label> Risk Preference </label>
+        <select id = "risk">
+            <option value = "LOW">LOW</option>
+            <option value = "MEDIUM">MEDIUM</option>
+            <option value = "HIGH">HIGH</option>
+        </select>
+
+        <button type = submit> Allocate Funds</button>
+    </form>
+    <div id = "result"></div>
+</div>
+    <script src = "app.js"></script>
+
+</body>
+</html>

@@ -1,9 +1,11 @@
 package com.rohan.fundallocator.backend.service;
 import com.rohan.fundallocator.backend.model.AllocationResult;
+import com.rohan.fundallocator.backend.model.RiskLevel;
 import org.springframework.stereotype.Service;
 import com.rohan.fundallocator.backend.model.Stock;
 import java.util.stream.Collectors;
 import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class AllocationService {
@@ -14,17 +16,16 @@ public class AllocationService {
         this.stockService = stockService;
     }
 
-    public List<AllocationResult> allocateFunds(List<String> symbols, double totalAmount) {
+    public List<AllocationResult> allocate(List<String> symbols, double totalAmount, RiskLevel riskLevel) {
 
-        double perStockAmount = totalAmount / symbols.size();
+        List<AllocationResult> results = new ArrayList<>();
+        double perStock = totalAmount / symbols.size();
 
-        return symbols.stream()
-                .map(stockService::analyzeStock)
-                .map(stock -> new AllocationResult(
-                        stock.getSymbol(),
-                        stock.getRiskLevel(),
-                        perStockAmount
-                ))
-                .collect(Collectors.toList());
+        for (String symbol : symbols) {
+            // for now just return dummy risk
+            results.add(new AllocationResult(symbol, riskLevel, perStock));
+      }
+
+        return results;
     }
 }
