@@ -55,7 +55,7 @@ public class StockService {
     }
     public Stock buildStock(String symbol) {
 
-        double currentPrice = stockApiClient.fetchCurrentPrice(symbol);
+        double currentPrice = StockApiClient.fetchCurrentPrice(symbol);
 
         List<Double> prices = stockApiClient.fetchHistoricalCloses(symbol);
         double volatility = VolatilityCalculator.calculateVolatility(prices);

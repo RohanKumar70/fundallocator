@@ -23,6 +23,7 @@ document.getElementById("allocationForm").addEventListener("submit", function(ev
             return response.json();
         })
         .then(data => {
+            console.log(data);
             const resultDiv = document.getElementById("result");
             if (!Array.isArray(data) || data.length == 0) {
                 resultDiv.innerHTML = "<p> No allocation results, please try again.</p>";
@@ -49,7 +50,7 @@ document.getElementById("allocationForm").addEventListener("submit", function(ev
                         <td>${stock.symbol}</td>
                         <td>${stock.riskLevel}</td>
                         <td>${stock.allocatedAmount.toFixed(2)}</td>
-                        <td>$${stock.currentPrice.toFixed(2)}</td>
+                        <td>${stock.currentPrice.toFixed(2)}</td>
                         <td>${(stock.volatility * 100).toFixed(2)}%</td>
                     </tr>
                 `;

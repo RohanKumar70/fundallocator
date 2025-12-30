@@ -12,7 +12,7 @@ import java.util.Map;
 public class StockApiClient {
 
     private static final String BASE_URL = "https://api.twelvedata.com";
-    private static final String API_KEY = "YOUR_API_KEY";
+    private static final String API_KEY = "a6cf0888eeff46d2a583ad6c70814d10";
 
     private static RestTemplate restTemplate = null;
     private static final ObjectMapper objectMapper = new ObjectMapper();
