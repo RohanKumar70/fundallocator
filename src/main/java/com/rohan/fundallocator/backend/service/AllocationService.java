@@ -22,8 +22,9 @@ public class AllocationService {
         double perStock = totalAmount / symbols.size();
 
         for (String symbol : symbols) {
-            // for now just return dummy risk
-            results.add(new AllocationResult(symbol, riskLevel, perStock));
+            double mockPrice = 150.0 + Math.random() * 100;
+            double mockVolatility = Math.random() * .05;
+            results.add(new AllocationResult(symbol, riskLevel, perStock, mockPrice, mockVolatility));
       }
 
         return results;

@@ -13,7 +13,7 @@ document.getElementById("allocationForm").addEventListener("submit", function(ev
 
     fetch("/api/allocate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
     })
         .then(response => {
@@ -24,10 +24,42 @@ document.getElementById("allocationForm").addEventListener("submit", function(ev
         })
         .then(data => {
             const resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-        })
-        .catch(error => {
-            console.error("Request failed:", error);
-            alert("Error calling backend. Check console: " + error);
+            if (!Array.isArray(data) || data.length == 0) {
+                resultDiv.innerHTML = "<p> No allocation results, please try again.</p>";
+                return;
+            }
+
+            let html = `
+                <h2>Allocation Results</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Risk Level</th>
+                            <th>Allocated Amount ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            data.forEach(stock => {
+                html += `
+                    <tr>
+                        <td>${stock.symbol}</td>
+                        <td>${stock.riskLevel}</td>
+                        <td>${stock.allocatedAmount.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+            html += `
+                    </tbody>
+                </table>
+            `;
+            resultDiv.innerHTML = html;
+
+//         })
+//         .catch(error => {
+//             console.error("Request failed:", error);
+//             alert("Error calling backend. Check console: " + error);
+//         });
         });
 });
