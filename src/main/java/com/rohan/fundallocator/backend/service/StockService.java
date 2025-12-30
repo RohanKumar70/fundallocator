@@ -41,7 +41,25 @@ public class StockService {
         // Latest close = current price
         double currentPrice = closePrices.get(0);
 
-        double volatility = VolatilityCalculator.calculateVolatility(closePrices);
+        List<Double> prices = stockApiClient.fetchHistoricalCloses(symbol);
+        double volatility = VolatilityCalculator.calculateVolatility(prices);
+        RiskLevel riskLevel = RiskCategorizer.categorize(volatility);
+
+        return new Stock(symbol, currentPrice, volatility, riskLevel);
+
+
+
+    }
+    public double getCurrentPrice(String symbol) {
+        return StockApiClient.fetchCurrentPrice(symbol);
+    }
+    public Stock buildStock(String symbol) {
+
+        double currentPrice = stockApiClient.fetchCurrentPrice(symbol);
+
+        List<Double> prices = stockApiClient.fetchHistoricalCloses(symbol);
+        double volatility = VolatilityCalculator.calculateVolatility(prices);
+
         RiskLevel riskLevel = RiskCategorizer.categorize(volatility);
 
         return new Stock(symbol, currentPrice, volatility, riskLevel);

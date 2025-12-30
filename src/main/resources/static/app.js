@@ -37,6 +37,8 @@ document.getElementById("allocationForm").addEventListener("submit", function(ev
                             <th>Symbol</th>
                             <th>Risk Level</th>
                             <th>Allocated Amount ($)</th>
+                            <th> Price ($)</th>
+                            <th>Volatility</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +49,8 @@ document.getElementById("allocationForm").addEventListener("submit", function(ev
                         <td>${stock.symbol}</td>
                         <td>${stock.riskLevel}</td>
                         <td>${stock.allocatedAmount.toFixed(2)}</td>
+                        <td>$${stock.currentPrice.toFixed(2)}</td>
+                        <td>${(stock.volatility * 100).toFixed(2)}%</td>
                     </tr>
                 `;
             });
@@ -56,10 +60,5 @@ document.getElementById("allocationForm").addEventListener("submit", function(ev
             `;
             resultDiv.innerHTML = html;
 
-//         })
-//         .catch(error => {
-//             console.error("Request failed:", error);
-//             alert("Error calling backend. Check console: " + error);
-//         });
         });
 });

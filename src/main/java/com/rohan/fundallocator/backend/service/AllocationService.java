@@ -1,6 +1,8 @@
 package com.rohan.fundallocator.backend.service;
 import com.rohan.fundallocator.backend.model.AllocationResult;
 import com.rohan.fundallocator.backend.model.RiskLevel;
+import com.rohan.fundallocator.backend.util.RiskCategorizer;
+import com.rohan.fundallocator.backend.util.VolatilityCalculator;
 import org.springframework.stereotype.Service;
 import com.rohan.fundallocator.backend.model.Stock;
 import java.util.stream.Collectors;
@@ -16,16 +18,27 @@ public class AllocationService {
         this.stockService = stockService;
     }
 
-    public List<AllocationResult> allocate(List<String> symbols, double totalAmount, RiskLevel riskLevel) {
+    public List<AllocationResult> allocate(
+            List<String> symbols,
+            double totalAmount,
+            RiskLevel userRisk
+    ) {
 
-        List<AllocationResult> results = new ArrayList<>();
         double perStock = totalAmount / symbols.size();
+        List<AllocationResult> results = new ArrayList<>();
 
         for (String symbol : symbols) {
-            double mockPrice = 150.0 + Math.random() * 100;
-            double mockVolatility = Math.random() * .05;
-            results.add(new AllocationResult(symbol, riskLevel, perStock, mockPrice, mockVolatility));
-      }
+
+            Stock stock = stockService.buildStock(symbol);
+
+            results.add(new AllocationResult(
+                    stock.getSymbol(),
+                    stock.getRiskLevel(),
+                    perStock,
+                    stock.getCurrentPrice(),
+                    stock.getVolatility()
+            ));
+        }
 
         return results;
     }

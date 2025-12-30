@@ -2,6 +2,7 @@ package com.rohan.fundallocator.backend.controller;
 import com.rohan.fundallocator.backend.model.AllocationResult;
 import com.rohan.fundallocator.backend.service.AllocationService;
 import org.springframework.web.bind.annotation.*;
+import com.rohan.fundallocator.backend.controller.AllocationRequest;
 
 import java.util.List;
 

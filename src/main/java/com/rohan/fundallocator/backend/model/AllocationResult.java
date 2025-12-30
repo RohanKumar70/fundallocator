@@ -9,6 +9,7 @@ public class AllocationResult {
     private final double allocatedAmount;
     private double currentPrice;
     private double volatility;
+    private double shares;
 
     // Constructor
     public AllocationResult(String symbol, RiskLevel riskLevel, double allocatedAmount, double currentPrice, double volatility) {
@@ -17,6 +18,7 @@ public class AllocationResult {
         this.allocatedAmount = allocatedAmount;
         this.currentPrice = currentPrice;
         this.volatility = volatility;
+        this.shares = (currentPrice > 0) ? allocatedAmount / currentPrice : 0;
     }
 
     // Getters
@@ -36,5 +38,9 @@ public class AllocationResult {
     }
     public double getVolatility() {
         return volatility;
+    }
+
+    public double getShares() {
+        return shares;
     }
 }
